@@ -1,0 +1,34 @@
+language: c
+sudo: false
+
+addons:
+  apt:
+    packages:
+    - gcc-multilib
+
+matrix:
+  include:
+    - dist: bionic
+    - dist: xenial
+    - dist: trusty
+
+before_install:
+- ./ti-cgt-install.sh --verbose all;
+
+script:
+  - for compiler in armcl cl430 cl2000 cl6x cl7x clpru; do
+      touch empty.c;
+      echo -e "\n\$ $compiler" --preproc_macros empty.c --output_file=macros.h;
+      "$compiler" --preproc_macros empty.c --output_file=macros.h;
+      cat macros.h;
+
+      touch empty.cc;
+      echo -e "\n\$ $compiler" --preproc_macros empty.cc --output_file=macros.hpp;
+      "$compiler" --preproc_macros empty.cc --output_file=macros.hpp;
+      cat macros.hpp;
+    done
+
+notifications:
+  email:
+    on_success: never
+    on_failure: never
