@@ -62,7 +62,7 @@ do_install_compiler () {
     echo_verbose "Found page for $1 at ${DL_URL}"
 
     # Find the installer URL
-    DL_URL="$(do_curl -s "$DL_URL" | grep -Po '(?<=href=\")[^\"]+_linux_installer_x86.bin')"
+    DL_URL="$(do_curl -s "$DL_URL" | grep -Po '(?<=href=\")[^\"]+_linux[^\"]*_installer[^\"]*\.bin')"
     if [ "x" = "x${DL_URL}" ]; then
 	echo "Unable to find $1 installer to download." >&2
 	exit 1
